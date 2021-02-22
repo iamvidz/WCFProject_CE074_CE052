@@ -1,0 +1,7 @@
+D:\c#codes\Authentication\AssignmentFiles\bin\Debug\AssignmentFiles.dll.config
+D:\c#codes\Authentication\AssignmentFiles\bin\Debug\AssignmentFiles.dll
+D:\c#codes\Authentication\AssignmentFiles\bin\Debug\AssignmentFiles.pdb
+D:\c#codes\Authentication\AssignmentFiles\obj\Debug\AssignmentFiles.csprojAssemblyReference.cache
+D:\c#codes\Authentication\AssignmentFiles\obj\Debug\AssignmentFiles.csproj.CoreCompileInputs.cache
+D:\c#codes\Authentication\AssignmentFiles\obj\Debug\AssignmentFiles.dll
+D:\c#codes\Authentication\AssignmentFiles\obj\Debug\AssignmentFiles.pdb

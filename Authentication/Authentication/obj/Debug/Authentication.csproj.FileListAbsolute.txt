@@ -1,0 +1,7 @@
+D:\c#codes\Authentication\Authentication\bin\Debug\Authentication.dll.config
+D:\c#codes\Authentication\Authentication\bin\Debug\Authentication.dll
+D:\c#codes\Authentication\Authentication\bin\Debug\Authentication.pdb
+D:\c#codes\Authentication\Authentication\obj\Debug\Authentication.csprojAssemblyReference.cache
+D:\c#codes\Authentication\Authentication\obj\Debug\Authentication.csproj.CoreCompileInputs.cache
+D:\c#codes\Authentication\Authentication\obj\Debug\Authentication.dll
+D:\c#codes\Authentication\Authentication\obj\Debug\Authentication.pdb

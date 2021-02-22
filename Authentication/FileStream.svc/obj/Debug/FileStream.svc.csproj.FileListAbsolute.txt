@@ -1,0 +1,6 @@
+D:\c#codes\Authentication\FileStream.svc\bin\Debug\FileStream.svc.dll.config
+D:\c#codes\Authentication\FileStream.svc\bin\Debug\FileStream.svc.dll
+D:\c#codes\Authentication\FileStream.svc\bin\Debug\FileStream.svc.pdb
+D:\c#codes\Authentication\FileStream.svc\obj\Debug\FileStream.svc.csproj.CoreCompileInputs.cache
+D:\c#codes\Authentication\FileStream.svc\obj\Debug\FileStream.svc.dll
+D:\c#codes\Authentication\FileStream.svc\obj\Debug\FileStream.svc.pdb

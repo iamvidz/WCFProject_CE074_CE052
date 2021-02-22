@@ -1,0 +1,7 @@
+D:\c#codes\Authentication\Question\bin\Debug\Question.dll.config
+D:\c#codes\Authentication\Question\bin\Debug\Question.dll
+D:\c#codes\Authentication\Question\bin\Debug\Question.pdb
+D:\c#codes\Authentication\Question\obj\Debug\Question.csprojAssemblyReference.cache
+D:\c#codes\Authentication\Question\obj\Debug\Question.csproj.CoreCompileInputs.cache
+D:\c#codes\Authentication\Question\obj\Debug\Question.dll
+D:\c#codes\Authentication\Question\obj\Debug\Question.pdb

@@ -1,0 +1,182 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
+
+namespace Assignment
+{
+    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in both code and config file together.
+    public class Service1 : IService1
+    {
+        public SqlConnection GetConnection()
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\c#codes\Client\Client\App_Data\Database1.mdf;Integrated Security=True");
+            return con;
+        }
+        public int getLen()
+        {
+            SqlConnection con = GetConnection();
+            con.Open();
+            string query = "Select COUNT(id) from [exam]";
+            SqlCommand cmd = new SqlCommand(query, con);
+            int cnt = Convert.ToInt32(cmd.ExecuteScalar());
+            con.Close();
+            return cnt;
+        }
+        public int getExLen()
+        {
+            SqlConnection con = GetConnection();
+            con.Open();
+            string q = "Select count(examid) from [exam]";
+            SqlCommand c = new SqlCommand(q, con);
+            int re = Convert.ToInt32(c.ExecuteScalar());
+            if (re != 0)
+            {
+                string query = "Select MAX(examid) from [exam]";
+                SqlCommand cmd = new SqlCommand(query, con);
+                var res = cmd.ExecuteScalar();
+                int cnt = Convert.ToInt32(res);
+                con.Close();
+                return cnt;
+            }
+            return 0;
+        }
+        public bool AddExam(Exam exam)
+        {
+            bool result = true;
+            SqlConnection con = GetConnection();
+            con.Open();
+            int examid = getExLen() + 1;
+            foreach (string q in exam.Questions)
+            {
+                int id = getLen() + 1;
+                string query = "Insert into [exam] values(@id,@question,@time,@teacher,@examid)";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@question", q);
+                cmd.Parameters.AddWithValue("@time", exam.DueTime);
+                cmd.Parameters.AddWithValue("@teacher", exam.Teacher);
+                cmd.Parameters.AddWithValue("@examid", examid);
+                int res = cmd.ExecuteNonQuery();
+                if (res > 0) result = result & true;
+                else result = false;
+            }
+            con.Close();
+            return result;
+        }
+
+        public bool DeleteExam(int id)
+        {
+            SqlConnection con = GetConnection();
+            con.Open();
+            string query = "delete from [exam] where examid=@id";
+            SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@id", id);
+            int res = cmd.ExecuteNonQuery();
+
+            query = "delete from [postedexam] where examid=@id";
+            cmd = new SqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@id", id);
+            res += cmd.ExecuteNonQuery();
+            con.Close();
+            if (res > 0) return true;
+            else return false;
+        }
+
+        public Exam GetExam(int examid)
+        {
+            SqlConnection con = GetConnection();
+            con.Open();
+            string query = "select * from [exam] where examid=@e";
+            SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@e", examid);
+            SqlDataReader rd = cmd.ExecuteReader();
+            Exam ex = new Exam();
+            List<string> ques = new List<string>();
+            int id = 0, exam_id = 0;
+            string question, Teacher = string.Empty;
+            DateTime d = new DateTime();
+            while (rd.Read())
+            {
+                id = rd.GetInt32(0);
+                question = rd[1].ToString();
+                Teacher = rd[3].ToString();
+                d = rd.GetDateTime(2);
+                exam_id = rd.GetInt32(4);
+                ques.Add(question);
+            }
+            ex.Questions = ques;
+            ex.Id = exam_id;
+            ex.DueTime = d;
+            ex.Teacher = Teacher;
+            return ex;
+        }
+
+        public bool PostExam(int examid)
+        {
+            Exam exam = GetExam(examid);
+            bool result = true;
+            SqlConnection con = GetConnection();
+            con.Open();
+            foreach (string q in exam.Questions)
+            {
+                string qry = "Select COUNT(id) from [postedexam]";
+                SqlCommand c = new SqlCommand(qry, con);
+                int rs = Convert.ToInt32(c.ExecuteScalar());
+                string query = "Insert into [postedexam] values(@id,@question,@time,@teacher,@examid)";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@id", rs + 1);
+                cmd.Parameters.AddWithValue("@question", q);
+                cmd.Parameters.AddWithValue("@time", exam.DueTime);
+                cmd.Parameters.AddWithValue("@teacher", exam.Teacher);
+                cmd.Parameters.AddWithValue("@examid", exam.Id);
+                int res = cmd.ExecuteNonQuery();
+                if (res > 0) result = result & true;
+                else result = false;
+            }
+            con.Close();
+            return result;
+        }
+
+        public List<Exam> GetAllPostedExam(string teacher)
+        {
+            List<Exam> exams = new List<Exam>();
+            SqlConnection con = GetConnection();
+            con.Open();
+            string query = "select distinct examid from [postedexam] where teacher=@t";
+            SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@t", teacher);
+            SqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read())
+            {
+                int exid = rd.GetInt32(0);
+                Exam e = GetExam(exid);
+                exams.Add(e);
+            }
+            con.Close();
+            return exams;
+        }
+
+        public List<Exam> GetAllExam(string teacher)
+        {
+            List<Exam> exams = new List<Exam>();
+            SqlConnection con = GetConnection();
+            con.Open();
+            string query = "select distinct examid from [exam] where teacher=@t";
+            SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@t", teacher);
+            SqlDataReader rd = cmd.ExecuteReader();
+            while (rd.Read())
+            {
+                int exid = rd.GetInt32(0);
+                Exam e = GetExam(exid);
+                exams.Add(e);
+            }
+            con.Close();
+            return exams;
+        }
+    }
+}
